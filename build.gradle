@@ -1,0 +1,26 @@
+apply plugin:'java'
+
+configurations {
+    integTestCompile { extendsFrom compile }
+    integTestRuntime { extendsFrom integTestCompile, runtime }
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    integTestCompile "junit:junit:4.8.1"
+}
+
+sourceSets {
+    integTest {
+        compileClasspath = sourceSets.main.classes + configurations.integTestCompile
+        runtimeClasspath = classes + sourceSets.main.classes + sonfiguration.integTestRuntime
+    }
+}
+
+task integrationTest(type: Test) {
+    testClassesDir = sourceSets.integTest.classesDir
+    classpath = sourceSets.integTest.runtimeClasspath
+}
